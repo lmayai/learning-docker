@@ -187,4 +187,92 @@ $ docker ps --help
 ```
 
 ## Contenedores interactivos
+Bande -i para que sea interactivo, y -t para terminar. Al ser interactivo permite editarlos
+```bash
+$ docker run -it ubuntu bash
 
+#adentro Pueden usarse las funciones del terminal de ubuntu
+# Aqui se ingreso al container
+# Para salir se usa exit
+$ exit
+```
+- Para comenzar un nuevo conatiner otra vez
+```bash
+$ docker start ID-DEL-CONTAINER
+```
+- Para conectarme a este último container nuevamente lanzado
+```bash
+$ docker attach ID-DEL-CONTAINER
+```
+
+## Crear contenedores con nombres en Docker
+Para crear el container con base a imagen de ubuntu
+```bash
+$ docker run --name LEO -it ubuntu
+```
+
+## Iniciar , reanudar y detener contenedores
+```bash
+$ docker run -it ubuntu
+```
+Desde el teclado presionar control + p + q, para que no se deje de ejecutar el contenedor
+- Luego para detenerlo, se usa
+```bash
+$ docker stop ID(posible con las 4 letras iniciales)
+```
+- Para iniciar al mismo contenedor
+```bash
+$ docker start ID
+```
+- Para conectarse a el:
+```bash
+$ docker attach ID
+```
+
+## Personalizar containers
+
+```bash
+$ docker run -it ubuntu:16.04 /bin/bash
+$ # Adentro no es posible hacer lo básico en ubuntu
+$ ifconfig
+$ apt-get 
+$ 
+$ # Se debe actualizar las dependencias
+$ apt-get update
+$ 
+$ # Ahora se pueden instalar los paquetes
+$ apt-get install nano
+$ nano
+$ apt-get install git
+```
+Todo estos cambios personalizaron los cambios.
+
+## Crear una imagen a partir de una contenedor con docker commit
+ubuntu: La imagen de ubuntu es para usar el bash,
+nginx: Crar un server web
+
+```bash
+docker run -it ubuntu bash
+@ ls 
+@ mkdir prueba
+@ cd prueba
+@ touch hola
+@ exit
+
+# Ahora con este se crea otro
+docker start 237d0b8a0d71
+docker commit 237d0b8a0d71 ubuntu-leo
+
+# En docker-images
+REPOSITORY                                               TAG                 IMAGE ID            CREATED             SIZE
+ubuntu-leo                                               latest              a1edc9aca56b        42 seconds ago      69.9MB
+```
+
+Ahora ya tenemos una imagen creada. Luego con esta creamos el contenedor
+```bash
+docker run -it ubuntu-leo
+@ ls
+# Muestra lo creado anteriormente
+```
+
+- Otra forma de crear imagenes desde contenedores es
