@@ -273,6 +273,41 @@ Ahora ya tenemos una imagen creada. Luego con esta creamos el contenedor
 docker run -it ubuntu-leo
 @ ls
 # Muestra lo creado anteriormente
+
+@ apt-get update
+@ apt-get install apache2
+@ service apache2 status
+@ service apache2 start
+@ service apache2 status
+@ nano /etc/apache2/apache2.conf
+# Se agrega en este archivo 
+ServerName localhost 
+
+1ns1t3*
+#Para salir ctrl p+q
+```
+- Luego le hacemos un commit, pero modificando los parámetros
+```
+$ docker commit --change='CMD ["apache2ctl","-D FOREGROUND"]' -c "EXPOSE 85" ID_CONTAINER apache2leo
+$ docker commit --change='CMD ["apache2ctl","-D","FOREGROUND"]' -c "EXPOSE 85" ID_CONTAINER apache2leo
+# sha256:8004349e6d9276200ab976288912658249a79ed689b80a7c4c0d3f979d4c7a56
+```
+Con esto se creo una nueva imagen.
+- Ahora para crear un nuevo contenedor con esta imagen que tiene apache:
+```
+$ docker run -d -p 5000:80 apache2-leo
+# 4e17de0f98cf6861f41115809a5af3d62f2fa53f88aab40afe0b6484d7050097
 ```
 
-- Otra forma de crear imagenes desde contenedores es
+## Dockerfiles
+Existen formas más faciles de crear imagenes apartir de contenedores o apartir de imagenes bases.
+- Es un documento de texto que contiene todos los comandos que un usuario puede llamar a la linea de comandos para montar una imagen.
+- Usar el comando docker wild
+- Es como una receta de cocina.
+![dockerfile](img-readme/file-base.png)
+* FROM: DEfine la imagen base para crear una nueva imagen
+* MANTEINER: Se refire al creador de la receta
+* RUN: Ejecuta comnado en la imagen base antes de ser creada.
+* ADD/COPY: Agrega o copia archivos desde el equipo local a la imagen
+* EXPOSE: Expone un puerto por defecto para el contenedor
+* CMD: Ejecuta una acción por defecto al crear el contenedor
